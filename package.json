@@ -1,0 +1,28 @@
+{
+  "name": "sunset-hack-hardware-city",
+  "version": "0.0.0",
+  "description": "Sunset hacl with bitalino.",
+  "main": "index.js",
+  "scripts": {
+    "test": "runtests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunsethack/sunset-hack-hardware-city.git"
+  },
+  "keywords": [
+    "sunset",
+    "hack",
+    "team12"
+  ],
+  "author": "team12",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunsethack/sunset-hack-hardware-city/issues"
+  },
+  "homepage": "https://github.com/sunsethack/sunset-hack-hardware-city",
+  "dependencies": {
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3"
+  }
+}
