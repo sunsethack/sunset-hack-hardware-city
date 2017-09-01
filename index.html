@@ -57,6 +57,52 @@
 
     </div>
 </body>
+<script src="/node_modules/jquery/dist/jquery.min.js" ></script>
 
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"/>
+<script>
+  console.log('start')
+	var rms = [];
+	var lux = [];
+	for (var i = 0; i < 250; ++i) { //BITalino server is giving us 250 samples per message
+	    rms[i] = 0.0;
+	    lux[i] = 0.0;
+	}
+	var freq = 0;
+	var a1 = [];
+	var counter = 0;
+	// Establish a connection to the ServerBIT
+  var ws = new WebSocket("ws://localhost:9001/");
+    var wsOpen = false;
+
+    ws.onopen = function() {
+        wsOpen = true;
+        console.log("ws opened");
+    };
+    
+    // Process the responses sent by the ServerBIT
+    ws.onmessage = function (e) {
+      console.log('onmessage');
+        var data = JSON.parse(e.data);
+        a1 = [];
+            
+        console.log(data.A6);
+
+        for (var i = 0; i < data.A1.length; ++i) {
+          
+            a1[i] = (data.A1[i]/512) - 1.0; //normalize: -1.0 to 1.0
+  
+            lux[i] = data.A6[i]/64; //normalize: 0.0 to 1.0
+
+        }
+        counter = 0;
+                       
+    };
+
+    // Detect when the page is unloaded or close
+    window.onbeforeunload = function() {
+        ws.onclose = function () {};
+        ws.close();
+    };  
+	
+</script>
 </html>
