@@ -1,108 +1,186 @@
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <title>App bitalino</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+    <style type="text/css">
+        .effect {
+            width: 2em;
+        }
+    </style>
 
+</head>
 
-  </head>
-  <body>
+<body>
     <div class="container">
-      <div class="row"> 
-        <div class="col-sm-12">Area de info e status actual</div>
-        
+        <div class="row">
+            <div class="col-sm-12">Area de info e status actual</div>
 
+        </div>
+        <div class="row movX">
+            <div class="col-sm-4">Movimento X</div>
+            <div class="col-sm-4 ">
 
-      </div>
-      <div class="row">
-          <div class="col-sm-4">Movimento X</div>
-          <div class="col-sm-4">
-            <select name="" id="">
-              <option value="">111</option>
-              <option value="">2222</option>
-              <option value="">3333</option>
-              <option value="">4444</option>
-            </select>
-          </div>
-          <div class="col-sm-4">When</div>
-      </div>
-      <div class="row">
-          <div class="col-sm-4">Movimento X</div>
-          <div class="col-sm-4">
-            <select name="" id="">
-              <option value="">111</option>
-              <option value="">2222</option>
-              <option value="">3333</option>
-              <option value="">4444</option>
-            </select>
-          </div>
-          <div class="col-sm-4">Frequência</div>
-      </div>
-      <div class="row">
-          <div class="col-sm-4">Movimento Z</div>
-          <div class="col-sm-4">
-            <select name="" id="">
-              <option value="">111</option>
-              <option value="">2222</option>
-              <option value="">3333</option>
-              <option value="">4444</option>
-            </select>
-          </div>
-          <div class="col-sm-4">Volume</div>
-      </div>
-      <div class="row">
-      <div class="col-sm-12"><button>Apply</button></div>
+                <div>
+                    <label>Cabinet</label>
+                    <input name="cabinet_level" class="effect" type="text" />
+                </div>
 
-      </div>
+                <div>
+                    <label>Reverb</label>
+                    <input name="reverb_level" class="effect" type="text" />
+                </div>
+
+                <div>
+                    <label>Volume</label>
+                    <input name="volume_level" class="effect" type="text" />
+                </div>
+
+                <div>
+                    <label>Delay</label>
+                    <input name="delay_level" class="effect">
+                    <label>Delay delay timer</label>
+                    <input name="delay_timer" class="effect" type="text" />
+                    <label>Delay feedback gain</label>
+                    <input name="delay_feedback_gain" class="effect" type="text" />
+                </div>
+
+                <div>
+                    <label>Overdrive</label>
+                    <input name="overdrive_level" class="effect" type="text" />
+                    <label>Overdrive drive</label>
+                    <input name="overdrive_drive" class="effect" type="text" />
+                    <label>Overdrive tone</label>
+                    <input name="overdrive_tone" class="effect" type="text" />
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+                <a onclick="doit()">Do it!</a>
+                <a onclick="stopit()">Stop it!</a>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12"><button>Apply</button></div>
+
+    </div>
 
     </div>
 </body>
-<script src="/node_modules/jquery/dist/jquery.min.js" ></script>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/public/pedalboard.js"></script>
 
 <script>
-  console.log('start')
-	var rms = [];
-	var lux = [];
-	for (var i = 0; i < 250; ++i) { //BITalino server is giving us 250 samples per message
-	    rms[i] = 0.0;
-	    lux[i] = 0.0;
-	}
-	var freq = 0;
-	var a1 = [];
-	var counter = 0;
-	// Establish a connection to the ServerBIT
-  var ws = new WebSocket("ws://localhost:9001/");
-    var wsOpen = false;
+    /*console.log('start')
+      var rms = [];
+      var lux = [];
+      for (var i = 0; i < 250; ++i) { //BITalino server is giving us 250 samples per message
+          rms[i] = 0.0;
+          lux[i] = 0.0;
+      }
+      var freq = 0;
+      var a1 = [];
+      var counter = 0;
+      // Establish a connection to the ServerBIT
+      var ws = new WebSocket("ws://localhost:9011/");
+        var wsOpen = false;
 
-    ws.onopen = function() {
-        wsOpen = true;
-        console.log("ws opened");
+        ws.onopen = function() {
+            wsOpen = true;
+            console.log("ws opened");
+        };
+
+        // Process the responses sent by the ServerBIT
+        ws.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            a1 = [];
+
+            console.log(data.A5);
+
+        /*    for (var i = 0; i < data.A1.length; ++i) {
+
+                a1[i] = (data.A1[i]/512) - 1.0; //normalize: -1.0 to 1.0
+
+                lux[i] = data.A6[i]/64; //normalize: 0.0 to 1.0
+
+            }
+            counter = 0;*/
+    /*
     };
-    
-    // Process the responses sent by the ServerBIT
-    ws.onmessage = function (e) {
-      console.log('onmessage');
-        var data = JSON.parse(e.data);
-        a1 = [];
-            
-        console.log(data.A6);
-
-        for (var i = 0; i < data.A1.length; ++i) {
-          
-            a1[i] = (data.A1[i]/512) - 1.0; //normalize: -1.0 to 1.0
-  
-            lux[i] = data.A6[i]/64; //normalize: 0.0 to 1.0
-
-        }
-        counter = 0;
-                       
-    };
-
+/*
     // Detect when the page is unloaded or close
     window.onbeforeunload = function() {
         ws.onclose = function () {};
         ws.close();
-    };  
-	
+    };  */
 </script>
+<script>
+    var stage = new pb.Stage();
+    var ctx = stage.getContext();
+    var board = new pb.Board(ctx);
+    stage.setBoard(board);
+    var overdrive = new pb.stomp.Overdrive(ctx);
+    var reverb = new pb.stomp.Reverb(ctx);
+    var volume = new pb.stomp.Volume(ctx);
+    var cabinet = new pb.stomp.Cabinet(ctx);
+    var delay = new pb.stomp.Delay(ctx);
+    board.addPedals([overdrive, delay, reverb, volume, cabinet]);
+    overdrive.setDrive(.1);
+    overdrive.setTone(.4);
+    overdrive.setLevel(.6);
+    volume.setLevel(1);
+    reverb.setLevel(.3);
+    delay.setDelayTimer(.2);
+    delay.setFeedbackGain(.7);
+</script>
+
+<script type="text/javascript">
+    var coiso = true;
+
+
+    function doit() {
+
+        var map = {};
+
+        $(".movX .effect").each(function() {
+            value = 0;
+            console.log(value);
+            if ($(this).val() != '') {
+                value = $(this).val();
+            }
+            map[$(this).attr("name")] = value;
+        });
+
+        console.log(map);
+
+        cabinet.setLevel(map['cabinet_level'])
+
+        reverb.setLevel(map['reverb_level']);
+
+        volume.setLevel(map['volume_level']);
+
+        delay.setLevel(map['delay_level']);
+        delay.setDelayTimer(map['delay_timer']);
+        delay.setFeedbackGain(map['delay_feedback_gain']);
+
+        overdrive.setLevel(map['overdrive_level']);
+        overdrive.setDrive(map['overdrive_drive']);
+        overdrive.setTone(map['overdrive_tone']);
+
+        // stage.stop();
+        stage.play('public/sample1.mp3');
+
+        console.log('doit');
+    }
+
+    function stopit() {
+        stage.stop();
+
+    }
+</script>
+
 </html>
