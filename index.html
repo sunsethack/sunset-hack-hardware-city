@@ -64,9 +64,17 @@
         </div>
 
     <div class="row">
-        <div class="col-sm-12"><button>Apply</button></div>
+        <div class="col-sm-12">
+        <button>Apply</button>
+        <button onclick="stopbita()">Stop bita</button>
+        </div>
 
     </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="mylogs">
+                </ul>
+            </div>
 
 
 
@@ -446,7 +454,6 @@
 </script>
 
 <script>
-    /*console.log('start')
       var rms = [];
       var lux = [];
       for (var i = 0; i < 250; ++i) { //BITalino server is giving us 250 samples per message
@@ -458,36 +465,40 @@
       var counter = 0;
       // Establish a connection to the ServerBIT
       var ws = new WebSocket("ws://localhost:9011/");
-        var wsOpen = false;
+    var wsOpen = false;
 
-        ws.onopen = function() {
-            wsOpen = true;
-            console.log("ws opened");
-        };
-
-        // Process the responses sent by the ServerBIT
-        ws.onmessage = function (e) {
-            var data = JSON.parse(e.data);
-            a1 = [];
-
-            console.log(data.A5);
-
-        /*    for (var i = 0; i < data.A1.length; ++i) {
-
-                a1[i] = (data.A1[i]/512) - 1.0; //normalize: -1.0 to 1.0
-
-                lux[i] = data.A6[i]/64; //normalize: 0.0 to 1.0
-
-            }
-            counter = 0;*/
-    /*
+    ws.onopen = function() {
+        wsOpen = true;
+        console.log("ws opened");
     };
-/*
+
+    // Process the responses sent by the ServerBIT
+    ws.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        //console.log(data.A5);
+        if ( $('.mylogs li').length > 1 ) {
+            $('.mylogs li').first().remove();
+        }
+
+        // 400 +
+        // 600 -
+
+        $(".mylogs").append('<li >A3-'+data.A3+'</li>');
+
+        for (var i = 0; i < data.A3.length; ++i) {
+            console.log(data.A3[i]);
+            var normalizedValue = (data.A3[i] - 400) / 200;
+            console.log(normalizedValue);
+            volume.setLevel(normalizedValue);
+        }
+    };
+
     // Detect when the page is unloaded or close
     window.onbeforeunload = function() {
         ws.onclose = function () {};
         ws.close();
-    };  */
+    };
+
 </script>
 <script>
     var stage = new pb.Stage();
@@ -510,8 +521,6 @@
 </script>
 
 <script type="text/javascript">
-    var coiso = true;
-
 
     function doit() {
 
