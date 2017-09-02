@@ -5,9 +5,74 @@
     <title>App bitalino</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
     <style type="text/css">
+      .movement-title {
+        font-size: 40px;
+      }
         .effect {
             width: 3em;
         }
+/*from https://www.w3schools.com/howto/howto_css_switch.asp*/
+        .switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
     </style>
 
 </head>
@@ -78,95 +143,16 @@
 
 
 
-<div class="col-sm-12">
-  <h3>Samples</h3>
-</div>
-
-<div class="row ">
-  <div class="col-sm-12 form-group">
-
-    <div id="mbc" class="col-sm-6">
-      <div class="form-check">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" value="">Movimento brusco para cima
-        </label>
-      </div>
-      <select id="sampleSelect" class="custom-select">
-        <option selected>Select sample</option>
-        <option value="url1">One</option>
-        <option value="url2">Two</option>
-        <option value="url3">Three</option>
-      </select>
-      <label class="form-check-label">
-        <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+<div class="col-sm-6 form-group">
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <label class="switch">
+        <input type="checkbox" />
+        <span class="slider round"></span>
       </label>
-
-      <div class="row">
-        <div class="col-sm-6">
-            <label>Cabinet</label>
-            <input name="cabinet_level" class="effect" type="number" min="0" max="100" />
-        </div>
-
-        <div class="col-sm-6">
-            <label>Reverb</label>
-            <input name="reverb_level" class="effect" type="number" min="0" max="100" />
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-6">
-            <label>Volume</label>
-            <input name="volume_level" class="effect" type="number" min="0" max="100" />
-        </div>
-
-        <div class="col-sm-6">
-          <label>Overdrive</label>
-          <input name="overdrive_level" class="effect" type="number" min="0" max="100" />
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col-sm-6">
-          <label>Overdrive drive</label>
-          <input name="overdrive_drive" class="effect" type="number" min="0" max="100" />
-        </div>
-
-        <div class="col-sm-6">
-          <label>Overdrive tone</label>
-          <input name="overdrive_tone" class="effect" type="number" min="0" max="100" />
-        </div>
-      </div>
-
-
-
-
-
-      <div class="row">
-        <div class="col-sm-6">
-          <label>Delay timer</label>
-          <input name="delay_timer" class="effect" type="number" min="0" max="100" />
-        </div>
-        <div class="col-sm-6">
-          <label>Delay</label>
-          <input name="delay_level" class="effect" type="number" min="0" max="100">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-sm-12">
-            <label>Delay feedback gain</label>
-            <input name="delay_feedback_gain" class="effect" type="number" min="0" max="100" />
-        </div>
-      </div>
+    <span class="movement-title">Up movement</span>
     </div>
-
-    <div id="mbb" class="col-sm-6">
-      <div class="form-check">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox" value="">Movimento brusco para baixo
-        </label>
-      </div>
+    <div class="panel-body">
       <select id="sampleSelect" class="custom-select">
         <option selected>Select sample</option>
         <option value="url1">One</option>
@@ -201,7 +187,6 @@
         </div>
       </div>
 
-
       <div class="row">
         <div class="col-sm-6">
           <label>Overdrive drive</label>
@@ -213,10 +198,6 @@
           <input name="overdrive_tone" class="effect" type="number" min="0" max="100" />
         </div>
       </div>
-
-
-
-
 
       <div class="row">
         <div class="col-sm-6">
@@ -235,95 +216,24 @@
             <input name="delay_feedback_gain" class="effect" type="number" min="0" max="100" />
         </div>
       </div>
+
     </div>
   </div>
-</div>
+    </div>
 
-    <div class="row ">
-      <div class="col-sm-12 form-group">
 
-        <div id="mbd" class="col-sm-6">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">Movimento brusco para a direita
-            </label>
-          </div>
-          <select id="sampleSelect" class="custom-select">
-            <option selected>Select sample</option>
-            <option value="url1">One</option>
-            <option value="url2">Two</option>
-            <option value="url3">Three</option>
-          </select>
-          <label class="form-check-label">
-            <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+
+
+    <div class="col-sm-6 form-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <label class="switch">
+            <input type="checkbox" />
+            <span class="slider round"></span>
           </label>
-
-          <div class="row">
-            <div class="col-sm-6">
-                <label>Cabinet</label>
-                <input name="cabinet_level" class="effect" type="number" min="0" max="100" />
-            </div>
-
-            <div class="col-sm-6">
-                <label>Reverb</label>
-                <input name="reverb_level" class="effect" type="number" min="0" max="100" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-6">
-                <label>Volume</label>
-                <input name="volume_level" class="effect" type="number" min="0" max="100" />
-            </div>
-
-            <div class="col-sm-6">
-              <label>Overdrive</label>
-              <input name="overdrive_level" class="effect" type="number" min="0" max="100" />
-            </div>
-          </div>
-
-
-          <div class="row">
-            <div class="col-sm-6">
-              <label>Overdrive drive</label>
-              <input name="overdrive_drive" class="effect" type="number" min="0" max="100" />
-            </div>
-
-            <div class="col-sm-6">
-              <label>Overdrive tone</label>
-              <input name="overdrive_tone" class="effect" type="number" min="0" max="100" />
-            </div>
-          </div>
-
-
-
-
-
-          <div class="row">
-            <div class="col-sm-6">
-              <label>Delay timer</label>
-              <input name="delay_timer" class="effect" type="number" min="0" max="100" />
-            </div>
-            <div class="col-sm-6">
-              <label>Delay</label>
-              <input name="delay_level" class="effect" type="number" min="0" max="100">
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm-12">
-                <label>Delay feedback gain</label>
-                <input name="delay_feedback_gain" class="effect" type="number" min="0" max="100" />
-            </div>
-          </div>
+    		<span class="movement-title">Down movement</span>
         </div>
-
-        <div id="mbe" class="col-sm-6">
-          <div class="form-check">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" value="">Movimento brusco para a esquerda
-            </label>
-          </div>
+        <div class="panel-body">
           <select id="sampleSelect" class="custom-select">
             <option selected>Select sample</option>
             <option value="url1">One</option>
@@ -392,18 +302,189 @@
                 <input name="delay_feedback_gain" class="effect" type="number" min="0" max="100" />
             </div>
           </div>
+
         </div>
       </div>
+        </div>
+
+
+
+        <div class="col-sm-6 form-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <label class="switch">
+                <input type="checkbox" />
+                <span class="slider round"></span>
+              </label>
+        		<span class="movement-title">Left movement</span>
+            </div>
+            <div class="panel-body">
+              <select id="sampleSelect" class="custom-select">
+                <option selected>Select sample</option>
+                <option value="url1">One</option>
+                <option value="url2">Two</option>
+                <option value="url3">Three</option>
+              </select>
+              <label class="form-check-label">
+                <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+              </label>
+
+              <div class="row">
+                <div class="col-sm-6">
+                    <label>Cabinet</label>
+                    <input name="cabinet_level" class="effect" type="number" min="0" max="100" />
+                </div>
+
+                <div class="col-sm-6">
+                    <label>Reverb</label>
+                    <input name="reverb_level" class="effect" type="number" min="0" max="100" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-6">
+                    <label>Volume</label>
+                    <input name="volume_level" class="effect" type="number" min="0" max="100" />
+                </div>
+
+                <div class="col-sm-6">
+                  <label>Overdrive</label>
+                  <input name="overdrive_level" class="effect" type="number" min="0" max="100" />
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <label>Overdrive drive</label>
+                  <input name="overdrive_drive" class="effect" type="number" min="0" max="100" />
+                </div>
+
+                <div class="col-sm-6">
+                  <label>Overdrive tone</label>
+                  <input name="overdrive_tone" class="effect" type="number" min="0" max="100" />
+                </div>
+              </div>
+
+
+
+
+
+              <div class="row">
+                <div class="col-sm-6">
+                  <label>Delay timer</label>
+                  <input name="delay_timer" class="effect" type="number" min="0" max="100" />
+                </div>
+                <div class="col-sm-6">
+                  <label>Delay</label>
+                  <input name="delay_level" class="effect" type="number" min="0" max="100">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12">
+                    <label>Delay feedback gain</label>
+                    <input name="delay_feedback_gain" class="effect" type="number" min="0" max="100" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+            </div>
+
+
+
+            <div class="col-sm-6 form-group">
+<div class="panel panel-default">
+    <div class="panel-heading">
+      <label class="switch">
+        <input type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+		<span class="movement-title">Right movement</span>
+    </div>
+    <div class="panel-body">
+      <select id="sampleSelect" class="custom-select">
+        <option selected>Select sample</option>
+        <option value="url1">One</option>
+        <option value="url2">Two</option>
+        <option value="url3">Three</option>
+      </select>
+      <label class="form-check-label">
+        <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+      </label>
+
+      <div class="row">
+        <div class="col-sm-6">
+            <label>Cabinet</label>
+            <input name="cabinet_level" class="effect" type="number" min="0" max="100" />
+        </div>
+
+        <div class="col-sm-6">
+            <label>Reverb</label>
+            <input name="reverb_level" class="effect" type="number" min="0" max="100" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+            <label>Volume</label>
+            <input name="volume_level" class="effect" type="number" min="0" max="100" />
+        </div>
+
+        <div class="col-sm-6">
+          <label>Overdrive</label>
+          <input name="overdrive_level" class="effect" type="number" min="0" max="100" />
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-sm-6">
+          <label>Overdrive drive</label>
+          <input name="overdrive_drive" class="effect" type="number" min="0" max="100" />
+        </div>
+
+        <div class="col-sm-6">
+          <label>Overdrive tone</label>
+          <input name="overdrive_tone" class="effect" type="number" min="0" max="100" />
+        </div>
+      </div>
+
+
+
+
+
+      <div class="row">
+        <div class="col-sm-6">
+          <label>Delay timer</label>
+          <input name="delay_timer" class="effect" type="number" min="0" max="100" />
+        </div>
+        <div class="col-sm-6">
+          <label>Delay</label>
+          <input name="delay_level" class="effect" type="number" min="0" max="100">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+            <label>Delay feedback gain</label>
+            <input name="delay_feedback_gain" class="effect" type="number" min="0" max="100" />
+        </div>
+      </div>
+
+    </div>
+  </div>
     </div>
 
 
-    <div class="col-sm-12">
-      <h3>Effects</h3>
-    </div>
 
-    <div class="row">
+    <div class="panel panel-default">
+        <div class="panel-heading">Effects</div>
+        <div class="panel-body">
 
-      <div class="col-sm-12">
+
+
 
 <div class="form-check col-sm-2">
   <label class="form-check-label">
@@ -466,66 +547,39 @@
 
 
 
-    <div id="effects_sequence" class="row">
-      <div class="col-sm-12">
-        <h3>Effects sequence</h3>
+    <div id="effects_sequence" class="panel panel-default">
+        <div class="panel-heading">Effects sequenc</div>
+        <div class="panel-body">
+
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+          <div class="col-sm-2 text-center">
+            <p>Reverb</p>
+          </div>
+        </div>
       </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-      <div class="col-sm-2">
-        <p>Reverb</p>
-      </div>
-
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
 </body>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
