@@ -483,62 +483,62 @@
 
     <div class="panel panel-default">
       <div class="panel-heading">Effects</div>
-      <div class="panel-body">
+      <div id="effects-panel" class="panel-body">
 
 
 
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Cabinet
+        <input id="cabinet" class="form-check-input" type="checkbox" value="Cabinet" />Cabinet
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Reverb
+        <input id="reverb" class="form-check-input" type="checkbox" value="Reverb" />Reverb
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Volume
+        <input id="volume" class="form-check-input" type="checkbox" value="Volume">Volume
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Overdrive
+        <input id="overdrive" class="form-check-input" type="checkbox" value="Overdrive">Overdrive
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Overdrive drive
+        <input id="overdrivedrive" class="form-check-input" type="checkbox" value="Overdrive drive">Overdrive drive
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Overdrive tone
+        <input id="overdrivetone" class="form-check-input" type="checkbox" value="Overdrive tone">Overdrive tone
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Delay timer
+        <input id="delaytimer" class="form-check-input" type="checkbox" value="Delay timer" />Delay timer
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Delay
+        <input id="delay" class="form-check-input" type="checkbox" value="Delay" />Delay
   </label>
         </div>
 
         <div class="form-check col-sm-2">
           <label class="form-check-label">
-        <input class="form-check-input" type="checkbox" value="">Delay feedback gain
+        <input id="delayfeedgain" class="form-check-input" type="checkbox" value="Delay feedback" />Delay feedback gain
   </label>
         </div>
 
@@ -549,37 +549,11 @@
 
 
 
-    <div id="effects_sequence" class="panel panel-default">
+    <div id="effects-sequence" class="panel panel-default">
       <div class="panel-heading">Effects sequenc</div>
       <div class="panel-body">
 
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
-        <div class="col-sm-2 text-center">
-          <p>Reverb</p>
-        </div>
+
       </div>
     </div>
   </div>
@@ -729,6 +703,29 @@
     function stopit() {
       stage.stop();
 
+    }
+
+
+
+    $("#effects-panel input[type=checkbox]").change(function () {
+      if ($(this).prop("checked")) {
+        addEffectDiv($(this).prop("id"), $(this).prop("value"));
+      } else {
+        removeEffectDiv($(this).prop("id"));
+      }
+    });
+
+    function buildEffectElement(id, name) {
+      return '<div ' + 'id="e_' + id + '" class="col-sm-2 text-center"><p>' + name + '</p></div>';
+    }
+
+    function addEffectDiv(id, name) {
+      var div = buildEffectElement(id, name);
+      $("#effects-sequence .panel-body").append(div);
+    }
+
+    function removeEffectDiv(id) {
+      $('#e_' + id).remove();
     }
 
 </script>
