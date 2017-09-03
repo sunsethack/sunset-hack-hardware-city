@@ -88,6 +88,59 @@
     .slider.round:before {
       border-radius: 50%;
     }
+
+
+input[type="range"]
+{
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    -ms-appearance: none !important;
+    -o-appearance: none !important;
+  appearance: none !important;
+    background: rgba(10, 10, 10, 0.6);
+    border-radius: 10px;
+      height: 9px;
+    outline: none;
+      cursor: pointer;
+}
+
+input[type='range']::-webkit-slider-thumb
+{
+    -webkit-appearance: none !important;
+      background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0.32, #A9A9A9), color-stop(0.83, #DCDCDC));
+      height: 20px;
+      width: 20px;
+    border-radius: 50%;
+}
+
+input[type='range']::-moz-slider-thumb
+{
+    -moz-appearance: none !important;
+      background-image:-webkit-gradient(linear, left bottom, left top, color-stop(0.32, #A9A9A9), color-stop(0.83, #DCDCDC));
+      height: 20px;
+      width: 20px;
+    border-radius: 50%;
+}
+
+input[type="range"]:before
+{
+    position: absolute;
+    font: 20px 'FontAwesome';
+  color: rgba(255, 255, 255, 0.7);
+    content: '\f026';
+    top: 0px;
+    left: -20px;
+}
+
+input[type="range"]:after
+{
+      position: absolute;
+      font: 20px 'FontAwesome';
+  color: rgba(255, 255, 255, 0.7);
+      content: '\f028';
+      top: 0px;
+    right: -10px;
+}
   </style>
 
 </head>
@@ -125,7 +178,7 @@
         <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
       </select>
             <label class="form-check-label">
-        <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop play
+        <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
       </label>
 
 
@@ -137,54 +190,54 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Cabinet</label>
-                <input name="cabinet_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Reverb</label>
-                <input name="reverb_level" class="effect" value="30" type="number" min="0" max="100" />
+                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6">
                 <label>Volume</label>
-                <input name="volume_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive</label>
-                <input name="overdrive_level" class="effect" value="60" type="number" min="0" max="100" />
+                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6">
                 <label>Overdrive drive</label>
-                <input name="overdrive_drive" class="effect" value="10" type="number" min="0" max="100" />
+                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive tone</label>
-                <input name="overdrive_tone" class="effect" value="40" type="number" min="0" max="100" />
+                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6">
                 <label>Delay timer</label>
-                <input name="delay_timer" class="effect" value="20" type="number" min="0" max="100" />
+                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
               </div>
               <div class="col-sm-6">
                 <label>Delay</label>
-                <input name="delay_level" class="effect" value="50" type="number" min="0" max="100">
+                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-12">
                 <label>Delay feedback gain</label>
-                <input name="delay_feedback_gain" class="effect" value="70" type="number" min="0" max="100" />
+                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
               </div>
             </div>
 
@@ -210,7 +263,7 @@
             <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
           </select>
             <label class="form-check-label">
-            <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
+            <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
           </label>
           <label class="form-check-label">
               <input id="applycb" class="form-check-input" type="checkbox" value="">Apply definition on start
@@ -219,24 +272,24 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Cabinet</label>
-                <input name="cabinet_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Reverb</label>
-                <input name="reverb_level" class="effect" value="30" type="number" min="0" max="100" />
+                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6">
                 <label>Volume</label>
-                <input name="volume_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive</label>
-                <input name="overdrive_level" class="effect" value="60" type="number" min="0" max="100" />
+                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
               </div>
             </div>
 
@@ -244,12 +297,12 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Overdrive drive</label>
-                <input name="overdrive_drive" class="effect" value="10" type="number" min="0" max="100" />
+                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive tone</label>
-                <input name="overdrive_tone" class="effect" value="40" type="number" min="0" max="100" />
+                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
               </div>
             </div>
 
@@ -257,18 +310,18 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Delay timer</label>
-                <input name="delay_timer" class="effect" value="20" type="number" min="0" max="100" />
+                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
               </div>
               <div class="col-sm-6">
                 <label>Delay</label>
-                <input name="delay_level" class="effect" value="50" type="number" min="0" max="100">
+                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-12">
                 <label>Delay feedback gain</label>
-                <input name="delay_feedback_gain" class="effect" value="70" type="number" min="0" max="100" />
+                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
               </div>
             </div>
 
@@ -293,7 +346,7 @@
                 <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
               </select>
             <label class="form-check-label">
-                <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
+                <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
               </label>
               <label class="form-check-label">
                   <input class="form-check-input applycb"  type="checkbox" value="">Apply definition on start
@@ -302,24 +355,24 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Cabinet</label>
-                <input name="cabinet_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Reverb</label>
-                <input name="reverb_level" class="effect" value="30" type="number" min="0" max="100" />
+                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-6">
                 <label>Volume</label>
-                <input name="volume_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive</label>
-                <input name="overdrive_level" class="effect" value="60" type="number" min="0" max="100" />
+                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
               </div>
             </div>
 
@@ -327,12 +380,12 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Overdrive drive</label>
-                <input name="overdrive_drive" class="effect" value="10" type="number" min="0" max="100" />
+                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive tone</label>
-                <input name="overdrive_tone" class="effect" value="40" type="number" min="0" max="100" />
+                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
               </div>
             </div>
 
@@ -343,18 +396,18 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Delay timer</label>
-                <input name="delay_timer" class="effect" value="20" type="number" min="0" max="100" />
+                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
               </div>
               <div class="col-sm-6">
                 <label>Delay</label>
-                <input name="delay_level" class="effect" value="50" type="number" min="0" max="100">
+                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
               </div>
             </div>
 
             <div class="row">
               <div class="col-sm-12">
                 <label>Delay feedback gain</label>
-                <input name="delay_feedback_gain" class="effect" value="70" type="number" min="0" max="100" />
+                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
               </div>
             </div>
 
@@ -379,7 +432,7 @@
         <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
       </select>
             <label class="form-check-label">
-        <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
+        <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
       </label>
 
       <label class="form-check-label">
@@ -390,50 +443,50 @@
             <div class="row">
               <div class="col-sm-6">
                 <label>Cabinet</label>
-                <input name="cabinet_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Reverb</label>
-                <input name="reverb_level" class="effect" value="30" type="number" min="0" max="100" />
+                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <label>Volume</label>
-                <input name="volume_level" class="effect" value="50" type="number" min="0" max="100" />
+                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive</label>
-                <input name="overdrive_level" class="effect" value="60" type="number" min="0" max="100" />
+                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <label>Overdrive drive</label>
-                <input name="overdrive_drive" class="effect" value="10" type="number" min="0" max="100" />
+                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
               </div>
 
               <div class="col-sm-6">
                 <label>Overdrive tone</label>
-                <input name="overdrive_tone" class="effect" value="40" type="number" min="0" max="100" />
+                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
               </div>
             </div>
             <div class="row">
               <div class="col-sm-6">
                 <label>Delay timer</label>
-                <input name="delay_timer" class="effect" value="20" type="number" min="0" max="100" />
+                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
               </div>
               <div class="col-sm-6">
                 <label>Delay</label>
-                <input name="delay_level" class="effect" value="50" type="number" min="0" max="100">
+                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
                 <label>Delay feedback gain</label>
-                <input name="delay_feedback_gain" class="effect" value="70" type="number" min="0" max="100" />
+                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
               </div>
             </div>
 
