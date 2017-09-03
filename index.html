@@ -8,6 +8,9 @@
     .movement-title {
       font-size: 40px;
     }
+    .panel-body {
+        display: none;
+    }
 
     .header {
       width: 100%;
@@ -545,22 +548,22 @@
 <script type="text/javascript">4
   $('#body_upmovement').hide()
 $('#check_upmovement').on('click', function () {
-  $('#body_upmovement').toggle()
+  $('#body_upmovement').toggle(200)
 })
 
   $('#body_downmovement').hide()
 $('#check_downmovement').on('click', function () {
-  $('#body_downmovement').toggle()
+  $('#body_downmovement').toggle(200)
 })
 
   $('#body_rightmovement').hide()
 $('#check_rightmovement').on('click', function () {
-  $('#body_rightmovement').toggle()
+  $('#body_rightmovement').toggle(300)
 })
 
   $('#body_leftmovement').hide()
 $('#check_leftmovement').on('click', function () {
-  $('#body_leftmovement').toggle()
+  $('#body_leftmovement').toggle(300)
 })
 </script>
 
