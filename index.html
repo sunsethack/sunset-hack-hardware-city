@@ -719,13 +719,14 @@ function getLastValue(arr) {
 
         console.log("achecked");
 
-        if(applyNewSettings){
+        if(true){
 
           var newSettings = getSelectedSampleSettings(selectedActionPanel);
 
           playingStuff.applySettingsToAll(newSettings);
 
           playingStuff.addStage(newSettings);
+console.log(newSettings);
 
         }
         else{
