@@ -720,7 +720,17 @@ function getLastValue(arr) {
 
         console.log("achecked");
 
-        if(applyNewSettings || actionName == 'downmovement'){
+        if(actionName == 'downmovement'){
+
+          var newSettings = getSelectedSampleSettings(selectedActionPanel);
+
+          playingStuff.applySettingsToAll(newSettings);
+
+          playingStuff.addStage(newSettings);
+console.log(newSettings);
+
+        }
+               else if (applyNewSettings){
 
           var newSettings = getSelectedSampleSettings(selectedActionPanel);
 
