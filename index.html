@@ -111,7 +111,7 @@
         <div class="panel panel-default" id="panel_upmovement">
           <div class="panel-heading">
             <label class="switch">
-        <input type="checkbox" />
+        <input id="check_upmovement" type="checkbox" />
         <span class="slider round"></span>
       </label>
             <span class="movement-title">First finger snap</span>
@@ -196,7 +196,7 @@
         <div class="panel panel-default">
           <div class="panel-heading" id="panel_downmovement">
             <label class="switch">
-            <input type="checkbox" />
+            <input  id="check_downmovement" type="checkbox" />
             <span class="slider round"></span>
           </label>
             <span class="movement-title">Second finger snap</span>
@@ -279,12 +279,12 @@
         <div class="panel panel-default" id="panel_leftmovement">
           <div class="panel-heading">
             <label class="switch">
-                <input type="checkbox" />
+                <input  id="check_leftmovement" type="checkbox" />
                 <span class="slider round"></span>
               </label>
             <span class="movement-title">Left movement</span>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" id="body_leftmovement">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
                 <option value="public/AB_BeatA110-12.wav">One</option>
                 <option value="public/AB_GuitarA110A-02.wav">Two</option>
@@ -365,12 +365,12 @@
         <div class="panel panel-default" id="panel_rightmovement">
           <div class="panel-heading">
             <label class="switch">
-        <input type="checkbox" />
+        <input  id="check_rightmovement" type="checkbox" />
         <span class="slider round"></span>
       </label>
             <span class="movement-title">Right movement</span>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" id="body_rightmovement">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
         <option value="public/AB_BeatA110-12.wav">One</option>
         <option value="public/AB_GuitarA110A-02.wav">Two</option>
@@ -442,14 +442,12 @@
 
 
 
-<div>
+<div style="display: none;">
+<div style="display: none;">
   <button class="bit-action" id="upmovement">First finger snap</button>
   <button class="bit-action" id="downmovement">Second finger snap</button>
   <button class="bit-action" id="leftmovement">Left movement</button>
   <button class="bit-action" id="rightmovement">Right movement</button>
-</div>
-
-<div>
     <button class="bit-action" id="stop" onclick="stopAllStages()">Stop</button>
 
   </div>
@@ -536,11 +534,35 @@
 
       </div>
     </div>
+    </div>
+
   </div>
 </body>
 <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="/public/pedalboard.js"></script>
 <script src="https://www.doc.gold.ac.uk/eavi/rapidmix/RapidLib.js"></script>
+
+<script type="text/javascript">4
+  $('#body_upmovement').hide()
+$('#check_upmovement').on('click', function () {
+  $('#body_upmovement').toggle()
+})
+
+  $('#body_downmovement').hide()
+$('#check_downmovement').on('click', function () {
+  $('#body_downmovement').toggle()
+})
+
+  $('#body_rightmovement').hide()
+$('#check_rightmovement').on('click', function () {
+  $('#body_rightmovement').toggle()
+})
+
+  $('#body_leftmovement').hide()
+$('#check_leftmovement').on('click', function () {
+  $('#body_leftmovement').toggle()
+})
+</script>
 
 <script>
   var rms = [];
