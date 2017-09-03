@@ -598,6 +598,8 @@
         powerMoveWasMage()
         console.log('Power move!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         $(".mylogs").append('<li >POWER MOVE!</li>');
+    } else {
+        powerMoveWasNotMage()
     }
 
       var normalizedValue = (a5LastValue - a5rotateMinimumValue) / (a5rotateMaximumValue - a5rotateMinimumValue);
@@ -631,8 +633,15 @@ function snapFingerWasMage()
 
 function powerMoveWasMage() {
     playingStuff.currentSettings.overdrive = 100;
-    playingStuff.currentSettings.overdriveDrive = 60;
-    playingStuff.currentSettings.overdriveTone = 60;
+    playingStuff.currentSettings.overdriveDrive = 100;
+
+    console.log(playingStuff.currentSettings);
+    playingStuff.applySettingsToAll(playingStuff.currentSettings);
+}
+
+function powerMoveWasNotMage() {
+    playingStuff.currentSettings.overdrive = 100;
+    playingStuff.currentSettings.overdriveDrive = 0;
 
     console.log(playingStuff.currentSettings);
     playingStuff.applySettingsToAll(playingStuff.currentSettings);
