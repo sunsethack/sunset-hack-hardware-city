@@ -148,7 +148,7 @@
       </div>
 
       <div class="col-sm-6 form-group">
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="panel_upmovement">
           <div class="panel-heading">
             <label class="switch">
         <input type="checkbox" />
@@ -157,15 +157,21 @@
             <span class="movement-title">Up movement</span>
           </div>
           <div class="panel-body">
-            <select id="sampleSelect" class="custom-select">
+            <select name="samplesrc" id="sampleSelect" class="custom-select effect">
         <option selected>Select sample</option>
-        <option value="url1">One</option>
-        <option value="url2">Two</option>
-        <option value="url3">Three</option>
+        <option value="public/sample1.mp3">One</option>
+        <option value="public/sample2.mp3">Two</option>
+        <option value="public/sample3.mp3">Three</option>
       </select>
             <label class="form-check-label">
-        <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+        <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop play
       </label>
+
+
+      
+      <label class="form-check-label">
+          <input id="applyCB" class="form-check-input" type="checkbox" value="">Apply definition on start
+        </label>
 
             <div class="row">
               <div class="col-sm-6">
@@ -230,7 +236,7 @@
 
       <div class="col-sm-6 form-group">
         <div class="panel panel-default">
-          <div class="panel-heading">
+          <div class="panel-heading" id="panel_downmovement">
             <label class="switch">
             <input type="checkbox" />
             <span class="slider round"></span>
@@ -238,15 +244,18 @@
             <span class="movement-title">Down movement</span>
           </div>
           <div class="panel-body">
-            <select id="sampleSelect" class="custom-select">
+            <select name="samplesrc" id="sampleSelect" class="custom-select effects">
             <option selected>Select sample</option>
-            <option value="url1">One</option>
-            <option value="url2">Two</option>
-            <option value="url3">Three</option>
+            <option value="public/sample1.mp3">One</option>
+            <option value="public/sample2.mp3">Two</option>
+            <option value="public/sample3.mp3">Three</option>
           </select>
             <label class="form-check-label">
-            <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+            <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
           </label>
+          <label class="form-check-label">
+              <input id="applyCB" class="form-check-input" type="checkbox" value="">Apply definition on start
+            </label>
 
             <div class="row">
               <div class="col-sm-6">
@@ -311,7 +320,7 @@
 
 
       <div class="col-sm-6 form-group">
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="panel_leftmovement">
           <div class="panel-heading">
             <label class="switch">
                 <input type="checkbox" />
@@ -320,15 +329,18 @@
             <span class="movement-title">Left movement</span>
           </div>
           <div class="panel-body">
-            <select id="sampleSelect" class="custom-select">
+            <select name="samplesrc" id="sampleSelect" class="custom-select effect">
                 <option selected>Select sample</option>
-                <option value="url1">One</option>
-                <option value="url2">Two</option>
-                <option value="url3">Three</option>
+                <option value="public/sample1.mp3">One</option>
+                <option value="public/sample2.mp3">Two</option>
+                <option value="public/sample3.mp3">Three</option>
               </select>
             <label class="form-check-label">
-                <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+                <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
               </label>
+              <label class="form-check-label">
+                  <input class="form-check-input applycb"  type="checkbox" value="">Apply definition on start
+                </label>
 
             <div class="row">
               <div class="col-sm-6">
@@ -396,7 +408,7 @@
 
 
       <div class="col-sm-6 form-group">
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="panel_rightmovement">
           <div class="panel-heading">
             <label class="switch">
         <input type="checkbox" />
@@ -405,15 +417,21 @@
             <span class="movement-title">Right movement</span>
           </div>
           <div class="panel-body">
-            <select id="sampleSelect" class="custom-select">
+            <select name="samplesrc" id="sampleSelect" class="custom-select effect">
         <option selected>Select sample</option>
-        <option value="url1">One</option>
-        <option value="url2">Two</option>
-        <option value="url3">Three</option>
+        <option value="public/sample1.mp3">One</option>
+        <option value="public/sample2.mp3">Two</option>
+        <option value="public/sample3.mp3">Three</option>
       </select>
             <label class="form-check-label">
-        <input id="loopCB" class="form-check-input" type="checkbox" value="">loop
+        <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
       </label>
+
+      <label class="form-check-label">
+          <input class="form-check-input applycb"  type="checkbox" value="">Apply definition on start
+        </label>
+
+
             <div class="row">
               <div class="col-sm-6">
                 <label>Cabinet</label>
@@ -468,16 +486,22 @@
         </div>
       </div>
 
-
-
-
-
-
-
-
     </div>
 
 
+
+<div>
+  <button class="bit-action" id="upmovement">Up movement</button>
+  <button class="bit-action" id="downmovement">Down movement</button>
+  <button class="bit-action" id="leftmovement">Left movement</button>
+  <button class="bit-action" id="rightmovement">Right movement</button>
+</div>
+
+<div>
+    <button class="bit-action" id="stop" onclick="stopAllStages()">Stop</button>
+   
+  </div>
+  
 
 
 
@@ -546,7 +570,11 @@
       </div>
 
     </div>
-
+    <div>
+        <button onclick="effectUp()">Effect Up</button>
+        <button onclick="effectDown()">Effect Down</button>
+       
+      </div>
 
 
     <div id="effects-sequence" class="panel panel-default">
@@ -643,6 +671,8 @@
   };
 
 </script>
+<!--
+
 <script>
     var stage = new pb.Stage();
     var ctx = stage.getContext();
@@ -663,6 +693,7 @@
     delay.setFeedbackGain(.7);
 
 </script>
+
 
 <script type="text/javascript">
     function doit() {
@@ -697,6 +728,8 @@
       // stage.stop();
       stage.play('public/sample1.mp3');
 
+      //stage.play('public/sample2.mp3');
+
       console.log('doit');
     }
 
@@ -704,7 +737,11 @@
       stage.stop();
 
     }
+  </script>
 
+-->
+
+<script>
 
 
     $("#effects-panel input[type=checkbox]").change(function () {
@@ -728,6 +765,234 @@
       $('#e_' + id).remove();
     }
 
+    factoryMovement = function(actionName){
+
+      // Check if action selector is active
+      // select the correspondent action pane
+
+      var selectedActionPanel = getActionPanel(actionName);
+ 
+      var isActiveDom = $( selectedActionPanel ).find( 'label.switch input[type=checkbox]' );
+
+
+      console.log(actionName);
+
+      if(isActiveDom.prop("checked")){
+        var applyNewSettings = useNewSettingsFactory(selectedActionPanel);
+
+        console.log("achecked");
+
+        if(applyNewSettings){
+            
+          var newSettings = getSelectedSampleSettings(selectedActionPanel);
+
+          playingStuff.applySettingsToAll(newSettings);
+
+          playingStuff.addStage(newSettings);
+
+        }
+        else{
+
+          settings = playingStuff.currentSettings.sampleSrc ? playingStuff.currentSettings : getSelectedSampleSettings(selectedActionPanel);
+
+
+console.log(settings);
+
+          playingStuff.addStage(settings);
+
+        }
+
+      }
+
+      console.log(isActiveDom);
+
+    }
+
+    getActionPanel = function (actionName)
+    {
+        return $("#panel_" + actionName)
+    }
+
+    useNewSettingsFactory = function(selectPanel){
+
+      return selectPanel.find("input.applycb").prop("checked");
+    }
+
+    getSelectedSampleSettings = function(selectedPanel){
+
+      var map = {};
+
+      $(selectedPanel).find(".effect").each(function () {
+        value = 0;
+        console.log(value);
+        if ($(this).val() != '') {
+          value = $(this).val();
+        }
+        map[$(this).attr("name")] = value;
+      });
+
+      var SampleSetting = {
+          loop:map['loop'],
+          sampleSrc:map['samplesrc'],
+          cabinet:map['cabinet_level'],
+          reverb:map['reverb_level'],
+          volume:map['volume_level'],
+          overdrive:map['overdrive_level'],
+          overdriveDrive:map['overdrive_drive'],
+          overdriveTone:map['overdrive_tone'],
+          delayTimer:map['delay_timer'],
+          delay:map['delay_level'],
+          delayFeedGain:map['delay_feedback_gain']
+      }
+
+      return SampleSetting;
+
+    }
+
+
+    stopAllStages = function(){
+
+      playingStuff.stopAll();
+
+    }
+
+
+    effectUp = function (){
+      playingStuff.currentSettings.volume ++;
+
+
+      console.log(playingStuff.currentSettings);
+      playingStuff.applySettingsToAll(playingStuff.currentSettings);
+    }
+
+
+    effectDown = function (){
+      playingStuff.currentSettings.volume --;
+
+      console.log(playingStuff.currentSettings);
+      playingStuff.applySettingsToAll(playingStuff.currentSettings);
+
+    }
 </script>
 
+
+<script>
+
+
+playingStuff = {
+
+
+  currentSettings:{},
+      tracksActive:[],
+      
+    playSample : function(sage, sampleLocation) {
+    
+        stage.play(sampleLocation);
+
+    }
+
+    ,
+    stopSample : function (stage){
+
+      stage.stop();
+
+    },
+    
+        applySettingsToAll : function (settings){
+          
+          that = this;
+
+            console.log("applySettingsToAll");
+
+            console.log(settings);
+
+          this.tracksActive.forEach(function(item, index){
+
+
+            console.log (settings);
+
+            that.applySettings(item, settings);
+
+          })
+
+        
+      },
+
+      applySettings : function (track, settings ){
+
+
+        console.log (settings);
+
+console.log (settings.volume/100);
+
+        track.overdrive.setDrive(settings.overdriveDrive/100);
+        //track.overdrive.setTone(settings.overdriveTone/100);
+        track.overdrive.setLevel(settings.overdrive/100);
+        track.volume.setLevel(settings.volume/100);
+        track.reverb.setLevel(settings.reverb/100);
+        track.delay.setDelayTimer(settings.delayTimer/100);
+        track.delay.setFeedbackGain(settings.delayFeedGain/100);
+        track.cabinet.setLevel(settings.cabinet/100);
+
+      },
+      
+      addStage : function (stageDefinitions){
+
+
+      var stage = new pb.Stage();
+      var ctx = stage.getContext();
+      var board = new pb.Board(ctx);
+      stage.setBoard(board);
+
+      var overdrive = new pb.stomp.Overdrive(ctx);
+      var reverb = new pb.stomp.Reverb(ctx);
+      var volume = new pb.stomp.Volume(ctx);
+      var cabinet = new pb.stomp.Cabinet(ctx);
+      var delay = new pb.stomp.Delay(ctx);
+      board.addPedals([overdrive, delay, reverb, volume, cabinet]);
+      
+      this.currentSettings = stageDefinitions;
+
+      track = {stage, ctx, board, overdrive, reverb, volume, cabinet, delay, stageDefinitions};
+
+      this.applySettings(track, stageDefinitions)
+     
+      this.tracksActive.push(track);
+
+      stage.play(stageDefinitions.sampleSrc);
+
+    }
+    ,
+    stopAll : function(){
+
+      this.tracksActive.forEach(function(item, index){
+
+            item.stage.stop();
+
+            item = null;
+
+          });
+
+          this.tracksActive = [];
+
+    }
+
+} ;
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+      $("button.bit-action").click(function(){
+        factoryMovement($(this).prop("id"));
+      } 
+      );
+
+
+    });
+
+</script>
 </html>
