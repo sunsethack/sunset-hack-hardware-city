@@ -594,6 +594,12 @@
         $(".mylogs").append('<li >SNAP FINGERS!</li>');
     }
 
+    if (isPowerMove(a1Max, a3Max, a5Max)) {
+        powerMoveWasMage()
+        console.log('Power move!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        $(".mylogs").append('<li >POWER MOVE!</li>');
+    }
+
       var normalizedValue = (a5LastValue - a5rotateMinimumValue) / (a5rotateMaximumValue - a5rotateMinimumValue);
 
       playingStuff.currentSettings.volume = normalizedValue * 100;
@@ -621,6 +627,15 @@ function snapFingerWasMage()
 
   }
   console.log('tracksPlaying: '+tracksPlaying);
+}
+
+function powerMoveWasMage() {
+    playingStuff.currentSettings.overdrive = 100;
+    playingStuff.currentSettings.overdriveDrive = 60;
+    playingStuff.currentSettings.overdriveTone = 60;
+
+    console.log(playingStuff.currentSettings);
+    playingStuff.applySettingsToAll(playingStuff.currentSettings);
 }
 
 function renewA5Max()
@@ -655,7 +670,12 @@ function isSnapFingers(a1Max, a3Max, a5Max) {
     }
     return false
 }
-
+function isPowerMove(a1Max, a3Max, a5Max) {
+    if (Number(a1Max) > 870 && Number(a3Max) < 700 && Number(a5Max) < 700) {
+        return true
+    }
+    return false
+}
 function getMax(arr) {
     var max;
     for (var i=0 ; i<arr.length ; i++) {
