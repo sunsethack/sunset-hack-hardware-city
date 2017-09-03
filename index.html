@@ -94,15 +94,15 @@
   <img src="imagens/TEM12_AURA_HORIZONT_cropped.png" alt="AURA" />
 </div>
   <div class="container">
-    <div class="row">
+    <div class="row" style="display: none">
       <div class="col-sm-2"><input type="text" name="a1LastValue"></div>
       <div class="col-sm-4"><input type="text" name="a3LastValue"></div>
       <div class="col-sm-4"><input type="text" name="a4LastValue"></div>
       <div class="col-sm-4"><input type="text" name="a5LastValue"><a onclick="renewA5Max()">set A5 Max</a></div>
     </div>
 
-    <div class="row">
-      <div class="col-sm-12">
+    <div class="row" >
+      <div class="col-sm-12" style="display:none">
         <ul class="mylogs">
         </ul>
       </div>
@@ -118,8 +118,8 @@
           </div>
           <div class="panel-body">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
-        <option selected value="public/sample1.mp3">One</option>
-        <option value="public/sample2.mp3">Two</option>
+        <option value="public/AB_BeatA110-12.wav">One</option>
+        <option value="public/AB_GuitarA110A-02.wav">Two</option>
       </select>
             <label class="form-check-label">
         <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop play
@@ -203,8 +203,8 @@
           </div>
           <div class="panel-body">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
-            <option selected value="public/sample1.mp3">One</option>
-            <option value="public/sample2.mp3">Two</option>
+            <option value="public/AB_BeatA110-12.wav">One</option>
+            <option value="public/AB_GuitarA110A-02.wav">Two</option>
           </select>
             <label class="form-check-label">
             <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
@@ -286,8 +286,8 @@
           </div>
           <div class="panel-body">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
-                <option selected value="public/sample1.mp3">One</option>
-                <option value="public/sample2.mp3">Two</option>
+                <option value="public/AB_BeatA110-12.wav">One</option>
+                <option value="public/AB_GuitarA110A-02.wav">Two</option>
               </select>
             <label class="form-check-label">
                 <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
@@ -372,8 +372,8 @@
           </div>
           <div class="panel-body">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
-        <option selected value="public/sample1.mp3">One</option>
-        <option value="public/sample2.mp3">Two</option>
+        <option value="public/AB_BeatA110-12.wav">One</option>
+        <option value="public/AB_GuitarA110A-02.wav">Two</option>
       </select>
             <label class="form-check-label">
         <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
@@ -569,26 +569,27 @@
   ws.onmessage = function (e) {
     var data = JSON.parse(e.data);
 
-console.log(data.A1);
+    console.log(data.A1);
 
-a1Max = getMax(data.A1)
-a3Max = getMax(data.A3)
-a5Max = getMax(data.A5)
+    a1Max = getMax(data.A1)
+    a3Max = getMax(data.A3)
+    a5Max = getMax(data.A5)
 
-a1LastValue = getLastValue(data.A1)
-a3LastValue = getLastValue(data.A3)
-a4LastValue = getLastValue(data.A4)
-a5LastValue = getLastValue(data.A5)
-$('input[name=a1LastValue]').val(a1LastValue);
-$('input[name=a3LastValue]').val(a3LastValue);
-$('input[name=a4LastValue]').val(a4LastValue);
-$('input[name=a5LastValue]').val(a5LastValue);
+    a1LastValue = getLastValue(data.A1)
+    a3LastValue = getLastValue(data.A3)
+    a4LastValue = getLastValue(data.A4)
+    a5LastValue = getLastValue(data.A5)
+    $('input[name=a1LastValue]').val(a1LastValue);
+    $('input[name=a3LastValue]').val(a3LastValue);
+    $('input[name=a4LastValue]').val(a4LastValue);
+    $('input[name=a5LastValue]').val(a5LastValue);
 
     console.log('1~'+a1Max);
     console.log('3~'+a3Max);
     console.log('5~'+a5Max);
 
     if (isSnapFingers(a1Max, a3Max, a5Max)) {
+        snapFingerWasMage();
         console.log('SNAP FINGERS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         $(".mylogs").append('<li >SNAP FINGERS!</li>');
     }
@@ -601,6 +602,26 @@ $('input[name=a5LastValue]').val(a5LastValue);
 
       console.log('norm: '+ normalizedValue);
   };
+
+seta5Max(6)
+
+function snapFingerWasMage()
+{
+  tracksPlaying = playingStuff.tracksActive.length
+  switch (tracksPlaying) {
+    case 0:
+factoryMovement('upmovement');
+      break;
+    case 1:
+factoryMovement('downmovement');
+      break;
+    case 2:
+    stopAllStages()
+    default:
+
+  }
+  console.log('tracksPlaying: '+tracksPlaying);
+}
 
 function renewA5Max()
 {
@@ -658,79 +679,7 @@ function getLastValue(arr) {
   };
 
 </script>
-<!--
-
 <script>
-    var stage = new pb.Stage();
-    var ctx = stage.getContext();
-    var board = new pb.Board(ctx);
-    stage.setBoard(board);
-    var overdrive = new pb.stomp.Overdrive(ctx);
-    var reverb = new pb.stomp.Reverb(ctx);
-    var volume = new pb.stomp.Volume(ctx);
-    var cabinet = new pb.stomp.Cabinet(ctx);
-    var delay = new pb.stomp.Delay(ctx);
-    board.addPedals([overdrive, delay, reverb, volume, cabinet]);
-    overdrive.setDrive(.1);
-    overdrive.setTone(.4);
-    overdrive.setLevel(.6);
-    volume.setLevel(1);
-    reverb.setLevel(.3);
-    delay.setDelayTimer(.2);
-    delay.setFeedbackGain(.7);
-
-</script>
-
-
-<script type="text/javascript">
-    function doit() {
-
-      var map = {};
-
-      $(".movX .effect").each(function () {
-        value = 0;
-        console.log(value);
-        if ($(this).val() != '') {
-          value = $(this).val();
-        }
-        map[$(this).attr("name")] = value;
-      });
-
-      console.log(map);
-
-      cabinet.setLevel(map['cabinet_level'])
-
-      reverb.setLevel(map['reverb_level']);
-
-      volume.setLevel(map['volume_level']);
-
-      delay.setLevel(map['delay_level']);
-      delay.setDelayTimer(map['delay_timer']);
-      delay.setFeedbackGain(map['delay_feedback_gain']);
-
-      overdrive.setLevel(map['overdrive_level']);
-      overdrive.setDrive(map['overdrive_drive']);
-      overdrive.setTone(map['overdrive_tone']);
-
-      // stage.stop();
-      stage.play('public/sample1.mp3');
-
-      //stage.play('public/sample2.mp3');
-
-      console.log('doit');
-    }
-
-    function stopit() {
-      stage.stop();
-
-    }
-  </script>
-
--->
-
-<script>
-
-
     $("#effects-panel input[type=checkbox]").change(function () {
       if ($(this).prop("checked")) {
         addEffectDiv($(this).prop("id"), $(this).prop("value"));
@@ -766,6 +715,7 @@ function getLastValue(arr) {
 
       if(isActiveDom.prop("checked")){
         var applyNewSettings = useNewSettingsFactory(selectedActionPanel);
+        console.log('applyNewSettings' + applyNewSettings);
 
         console.log("achecked");
 
