@@ -116,9 +116,9 @@
       </label>
             <span class="movement-title">First finger snap</span>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" id="body_upmovement">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
-        <option value="public/AB_BeatA110-12.wav">One</option>
+        <option selected value="public/AB_BeatA110-12.wav">One</option>
         <option value="public/AB_GuitarA110A-02.wav">Two</option>
       </select>
             <label class="form-check-label">
@@ -128,7 +128,7 @@
 
 
       <label class="form-check-label">
-          <input id="applyCB" class="form-check-input" type="checkbox" value="">Apply definition on start
+          <input id="applycb" class="form-check-input" type="checkbox" value="">Apply definition on start
         </label>
 
             <div class="row">
@@ -201,7 +201,7 @@
           </label>
             <span class="movement-title">Second finger snap</span>
           </div>
-          <div class="panel-body">
+          <div class="panel-body" id="body_downmovement">
             <select name="samplesrc" id="sampleSelect" class="custom-select effect">
             <option value="public/AB_BeatA110-12.wav">One</option>
             <option value="public/AB_GuitarA110A-02.wav">Two</option>
@@ -210,7 +210,7 @@
             <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">loop
           </label>
           <label class="form-check-label">
-              <input id="applyCB" class="form-check-input" type="checkbox" value="">Apply definition on start
+              <input id="applycb" class="form-check-input" type="checkbox" value="">Apply definition on start
             </label>
 
             <div class="row">
@@ -610,14 +610,14 @@ function snapFingerWasMage()
   tracksPlaying = playingStuff.tracksActive.length
   switch (tracksPlaying) {
     case 0:
-factoryMovement('upmovement');
+        factoryMovement('upmovement');
       break;
     case 1:
-factoryMovement('downmovement');
+        factoryMovement('downmovement');
       break;
     case 2:
-    stopAllStages()
-    default:
+        stopAllStages()
+      default:
 
   }
   console.log('tracksPlaying: '+tracksPlaying);
@@ -706,10 +706,11 @@ function getLastValue(arr) {
       // Check if action selector is active
       // select the correspondent action pane
 
-      var selectedActionPanel = getActionPanel(actionName);
+      var selectedActionPanel = $("#panel_" + actionName);
 
       var isActiveDom = $( selectedActionPanel ).find( 'label.switch input[type=checkbox]' );
 
+      var selectedActionPanel = $("#body_" + actionName) // body_downmovement
 
       console.log(actionName);
 
@@ -746,12 +747,11 @@ console.log(settings);
 
     }
 
-    getActionPanel = function (actionName)
-    {
-        return $("#panel_" + actionName)
-    }
-
     useNewSettingsFactory = function(selectPanel){
+
+        if (selectPanel.find("input.applycb").length =! 1) {
+            console.log('NOOOOOOOOO');
+        }
 
       return selectPanel.find("input.applycb").prop("checked");
     }
@@ -760,7 +760,10 @@ console.log(settings);
 
       var map = {};
 
+      console.log(selectedPanel);
+
       $(selectedPanel).find(".effect").each(function () {
+
         value = 0;
         console.log(value);
         if ($(this).val() != '') {
