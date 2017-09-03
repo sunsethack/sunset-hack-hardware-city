@@ -94,8 +94,12 @@
   <img src="imagens/TEM12_AURA_HORIZONT_cropped.png" alt="AURA" />
 </div>
   <div class="container">
-
-
+    <div class="row">
+      <div class="col-sm-2"><input type="text" name="a1LastValue"></div>
+      <div class="col-sm-4"><input type="text" name="a3LastValue"></div>
+      <div class="col-sm-4"><input type="text" name="a4LastValue"></div>
+      <div class="col-sm-4"><input type="text" name="a5LastValue"><a onclick="renewA5Max()">set A5 Max</a></div>
+    </div>
 
     <div class="row">
       <div class="col-sm-12">
@@ -551,6 +555,10 @@
   // Establish a connection to the ServerBIT
   var ws = new WebSocket("ws://localhost:9011/");
   var wsOpen = false;
+  var a5rotateMiddleValue = 500
+  var a5rotateMaximumValue = a5rotateMiddleValue + 100
+  var a5rotateMinimumValue = a5rotateMiddleValue - 100
+  seta5Middle(500)
 
   ws.onopen = function () {
     wsOpen = true;
@@ -560,24 +568,89 @@
   // Process the responses sent by the ServerBIT
   ws.onmessage = function (e) {
     var data = JSON.parse(e.data);
-    //console.log(data.A5);
-    if ($('.mylogs li').length > 1) {
-      $('.mylogs li').first().remove();
+
+console.log(data.A1);
+
+a1Max = getMax(data.A1)
+a3Max = getMax(data.A3)
+a5Max = getMax(data.A5)
+
+a1LastValue = getLastValue(data.A1)
+a3LastValue = getLastValue(data.A3)
+a4LastValue = getLastValue(data.A4)
+a5LastValue = getLastValue(data.A5)
+$('input[name=a1LastValue]').val(a1LastValue);
+$('input[name=a3LastValue]').val(a3LastValue);
+$('input[name=a4LastValue]').val(a4LastValue);
+$('input[name=a5LastValue]').val(a5LastValue);
+
+    console.log('1~'+a1Max);
+    console.log('3~'+a3Max);
+    console.log('5~'+a5Max);
+
+    if (isSnapFingers(a1Max, a3Max, a5Max)) {
+        console.log('SNAP FINGERS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        $(".mylogs").append('<li >SNAP FINGERS!</li>');
     }
 
-    // 400 +
-    // 600 -
+      var normalizedValue = (a5LastValue - a5rotateMinimumValue) / (a5rotateMaximumValue - a5rotateMinimumValue);
 
-    $(".mylogs").append('<li >A3-' + data.A3 + '</li>');
+      playingStuff.currentSettings.volume = normalizedValue * 100;
+      console.log(playingStuff.currentSettings);
+      playingStuff.applySettingsToAll(playingStuff.currentSettings);
 
-    for (var i = 0; i < data.A3.length; ++i) {
-      console.log(data.A3[i]);
-      var normalizedValue = (data.A3[i] - 400) / 200;
-      console.log(normalizedValue);
-      volume.setLevel(normalizedValue);
-    }
+      console.log('norm: '+ normalizedValue);
   };
 
+function renewA5Max()
+{
+    seta5Max($('input[name=a5LastValue]').val());
+}
+
+function seta5Max(newValue) {
+    console.log(newValue);
+    a5rotateMaximumValue = Number(newValue)
+    console.log('A5 new max Value: ' + a5rotateMiddleValue)
+    a5rotateMiddleValue = a5rotateMaximumValue - 100
+    a5rotateMinimumValue = a5rotateMiddleValue - 100
+}
+
+function renewA5Middle()
+{
+    seta5Middle($('input[name=a5LastValue]').val());
+}
+
+function seta5Middle(newValue) {
+    console.log(newValue);
+    a5rotateMiddleValue = Number(newValue)
+    console.log('A5 new middle Value: ' + a5rotateMiddleValue)
+    a5rotateMaximumValue = a5rotateMiddleValue + 100
+    a5rotateMinimumValue = a5rotateMiddleValue - 100
+}
+
+function isSnapFingers(a1Max, a3Max, a5Max) {
+    if (Number(a1Max) > 870 && Number(a3Max) > 750 && Number(a5Max) > 740) {
+        return true
+    }
+    return false
+}
+
+function getMax(arr) {
+    var max;
+    for (var i=0 ; i<arr.length ; i++) {
+        if (!max || parseInt(arr[i]) > parseInt(max))
+            max = arr[i];
+    }
+    return parseInt(max);
+}
+
+function getLastValue(arr) {
+    var lastValue = false;
+    for (var i=0 ; i<arr.length ; i++) {
+        lastValue = arr[i];
+    }
+    return parseInt(lastValue);
+}
   // Detect when the page is unloaded or close
   window.onbeforeunload = function () {
     ws.onclose = function () { };
