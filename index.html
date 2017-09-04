@@ -1,39 +1,843 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Socket.IO chat</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
-  </head>
-  <body>
-    <ul id="messages"></ul>
-    <form action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
 
-    
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-        $(function () {
-            var socket = io();
-            $('form').submit(function(){
-            socket.emit('chat message', $('#m').val());
-            $('#m').val('');
-            return false;
-            });
-            socket.on('chat message', function(msg){
-            $('#messages').append($('<li>').text(msg));
-            });
+<head>
+    <title>App bitalino</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+    <style type="text/css">
+        .movement-title {
+            font-size: 40px;
+        }
+
+        .panel-body {
+            display: none;
+        }
+
+        .header {
+            width: 100%;
+            background-color: #000000;
+        }
+
+        .header img {
+            height: 100px;
+        }
+
+        .effect {
+            width: 3em;
+        }
+
+        select.effect {
+            width: 9em;
+        }
+        /*from https://www.w3schools.com/howto/howto_css_switch.asp*/
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+        /* Hide default HTML checkbox */
+
+        .switch input {
+            display: none;
+        }
+        /* The slider */
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(16px);
+            -ms-transform: translateX(16px);
+            transform: translateX(16px);
+        }
+        /* Rounded sliders */
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+
+        input[type="range"] {
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            -ms-appearance: none !important;
+            -o-appearance: none !important;
+            appearance: none !important;
+            background: rgba(10, 10, 10, 0.6);
+            border-radius: 10px;
+            height: 9px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none !important;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, #A9A9A9), color-stop(0.83, #DCDCDC));
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+        }
+
+        input[type='range']::-moz-slider-thumb {
+            -moz-appearance: none !important;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.32, #A9A9A9), color-stop(0.83, #DCDCDC));
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+        }
+
+        input[type="range"]:before {
+            position: absolute;
+            font: 20px 'FontAwesome';
+            color: rgba(255, 255, 255, 0.7);
+            content: '\f026';
+            top: 0px;
+            left: -20px;
+        }
+
+        input[type="range"]:after {
+            position: absolute;
+            font: 20px 'FontAwesome';
+            color: rgba(255, 255, 255, 0.7);
+            content: '\f028';
+            top: 0px;
+            right: -10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="header">
+        <img src="imagens/TEM12_AURA_HORIZONT_cropped.png" alt="AURA" />
+    </div>
+    <div class="container">
+        <div class="row" style="display: none">
+            <div class="col-sm-2"><input type="text" name="a1LastValue"></div>
+            <div class="col-sm-4"><input type="text" name="a3LastValue"></div>
+            <div class="col-sm-4"><input type="text" name="a4LastValue"></div>
+            <div class="col-sm-4"><input type="text" name="a5LastValue"><a onclick="renewA5Max()">set A5 Max</a></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12" style="display:none">
+                <ul class="mylogs">
+                </ul>
+            </div>
+
+            <div class="col-sm-6 form-group">
+                <div class="panel panel-default" id="panel_upmovement">
+                    <div class="panel-heading">
+                        <label class="switch">
+                          <input id="check_upmovement" type="checkbox" />
+                          <span class="slider round"></span>
+                        </label>
+                        <span class="movement-title">First finger snap</span>
+                    </div>
+                    <div class="panel-body" id="body_upmovement">
+                        <select name="samplesrc" id="sampleSelect" class="custom-select effect">
+                          <option selected value="public/AB_BeatA110-12.wav">Beat</option>
+                          <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
+                        </select>
+                        <label class="form-check-label">
+                          <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
+                        </label>
+                        <label class="form-check-label">
+                          <input id="applycb" class="form-check-input" type="checkbox" value="">Apply definition on start
+                        </label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Cabinet</label>
+                                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Reverb</label>
+                                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Volume</label>
+                                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label>Overdrive</label>
+                                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Overdrive drive</label>
+                                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Overdrive tone</label>
+                                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Delay timer</label>
+                                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Delay</label>
+                                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Delay feedback gain</label>
+                                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading" id="panel_downmovement">
+                        <label class="switch">
+                          <input  id="check_downmovement" type="checkbox" />
+                          <span class="slider round"></span>
+                        </label>
+                        <span class="movement-title">Second finger snap</span>
+                    </div>
+                    <div class="panel-body" id="body_downmovement">
+                        <select name="samplesrc" id="sampleSelect" class="custom-select effect">
+                          <option value="public/AB_BeatA110-12.wav">Beat</option>
+                          <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
+                        </select>
+                        <label class="form-check-label">
+                          <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
+                        </label>
+                        <label class="form-check-label">
+                          <input id="applycb" class="form-check-input" type="checkbox" value="">Apply definition on start
+                        </label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Cabinet</label>
+                                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Reverb</label>
+                                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Volume</label>
+                                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Overdrive</label>
+                                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Overdrive drive</label>
+                                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Overdrive tone</label>
+                                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Delay timer</label>
+                                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Delay</label>
+                                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Delay feedback gain</label>
+                                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 form-group">
+                <div class="panel panel-default" id="panel_leftmovement">
+                    <div class="panel-heading">
+                        <label class="switch">
+                          <input  id="check_leftmovement" type="checkbox" />
+                          <span class="slider round"></span>
+                        </label>
+                        <span class="movement-title">Left movement</span>
+                    </div>
+                    <div class="panel-body" id="body_leftmovement">
+                        <select name="samplesrc" id="sampleSelect" class="custom-select effect">
+                          <option value="public/AB_BeatA110-12.wav">Beat</option>
+                          <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
+                        </select>
+                        <label class="form-check-label">
+                          <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
+                        </label>
+                        <label class="form-check-label">
+                          <input class="form-check-input applycb"  type="checkbox" value="">Apply definition on start
+                        </label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Cabinet</label>
+                                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Reverb</label>
+                                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Volume</label>
+                                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Overdrive</label>
+                                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Overdrive drive</label>
+                                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Overdrive tone</label>
+                                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Delay timer</label>
+                                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Delay</label>
+                                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Delay feedback gain</label>
+                                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 form-group">
+                <div class="panel panel-default" id="panel_rightmovement">
+                    <div class="panel-heading">
+                        <label class="switch">
+                          <input  id="check_rightmovement" type="checkbox" />
+                          <span class="slider round"></span>
+                        </label>
+                        <span class="movement-title">Right movement</span>
+                    </div>
+                    <div class="panel-body" id="body_rightmovement">
+                        <select name="samplesrc" id="sampleSelect" class="custom-select effect">
+                          <option value="public/AB_BeatA110-12.wav">Beat</option>
+                          <option value="public/AB_GuitarA110A-02.wav">Guitar</option>
+                        </select>
+                        <label class="form-check-label">
+                          <input name="loop" class="form-check-input loopcb effect" type="checkbox" value="">Loop
+                        </label>
+                        <label class="form-check-label">
+                          <input class="form-check-input applycb"  type="checkbox" value="">Apply definition on start
+                        </label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Cabinet</label>
+                                <input name="cabinet_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Reverb</label>
+                                <input name="reverb_level" class="effect" value="30" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Volume</label>
+                                <input name="volume_level" class="effect" value="50" type="range" min="0" max="100" />
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label>Overdrive</label>
+                                <input name="overdrive_level" class="effect" value="60" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Overdrive drive</label>
+                                <input name="overdrive_drive" class="effect" value="10" type="range" min="0" max="100" />
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label>Overdrive tone</label>
+                                <input name="overdrive_tone" class="effect" value="40" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Delay timer</label>
+                                <input name="delay_timer" class="effect" value="20" type="range" min="0" max="100" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>Delay</label>
+                                <input name="delay_level" class="effect" value="50" type="range" min="0" max="100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Delay feedback gain</label>
+                                <input name="delay_feedback_gain" class="effect" value="70" type="range" min="0" max="100" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: none;">
+            <div style="display: none;">
+                <button class="bit-action" id="upmovement">First finger snap</button>
+                <button class="bit-action" id="downmovement">Second finger snap</button>
+                <button class="bit-action" id="leftmovement">Left movement</button>
+                <button class="bit-action" id="rightmovement">Right movement</button>
+                <button class="bit-action" id="stop" onclick="stopAllStages()">Stop</button>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Effects</div>
+                <div id="effects-panel" class="panel-body">
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="cabinet" class="form-check-input" type="checkbox" value="Cabinet" />Cabinet
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="reverb" class="form-check-input" type="checkbox" value="Reverb" />Reverb
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="volume" class="form-check-input" type="checkbox" value="Volume">Volume
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="overdrive" class="form-check-input" type="checkbox" value="Overdrive">Overdrive
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="overdrivedrive" class="form-check-input" type="checkbox" value="Overdrive drive">Overdrive drive
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="overdrivetone" class="form-check-input" type="checkbox" value="Overdrive tone">Overdrive tone
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="delaytimer" class="form-check-input" type="checkbox" value="Delay timer" />Delay timer
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="delay" class="form-check-input" type="checkbox" value="Delay" />Delay
+                        </label>
+                    </div>
+                    <div class="form-check col-sm-2">
+                        <label class="form-check-label">
+                              <input id="delayfeedgain" class="form-check-input" type="checkbox" value="Delay feedback" />Delay feedback gain
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button onclick="effectUp()">Effect Up</button>
+                <button onclick="effectDown()">Effect Down</button>
+            </div>
+            <div id="effects-sequence" class="panel panel-default">
+                <div class="panel-heading">Effects sequenc</div>
+                <div class="panel-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/public/pedalboard.js"></script>
+<script src="https://www.doc.gold.ac.uk/eavi/rapidmix/RapidLib.js"></script>
+
+<script type="text/javascript">
+    $('#body_upmovement').hide()
+    $('#check_upmovement').on('click', function() {
+        $('#body_upmovement').toggle(200)
+    })
+    $('#body_downmovement').hide()
+    $('#check_downmovement').on('click', function() {
+        $('#body_downmovement').toggle(200)
+    })
+    $('#body_rightmovement').hide()
+    $('#check_rightmovement').on('click', function() {
+        $('#body_rightmovement').toggle(300)
+    })
+    $('#body_leftmovement').hide()
+    $('#check_leftmovement').on('click', function() {
+        $('#body_leftmovement').toggle(300)
+    })
+</script>
+
+<script>
+    var rms = [];
+    var lux = [];
+    for (var i = 0; i < 250; ++i) { //BITalino server is giving us 250 samples per message
+        rms[i] = 0.0;
+        lux[i] = 0.0;
+    }
+    var freq = 0;
+    var a1 = [];
+    var counter = 0;
+    // Establish a connection to the ServerBIT
+    var ws = new WebSocket("ws://localhost:9001/");
+    var wsOpen = false;
+    var a5rotateMiddleValue = 500
+    var a5rotateMaximumValue = a5rotateMiddleValue + 100
+    var a5rotateMinimumValue = a5rotateMiddleValue - 100
+    seta5Middle(500)
+
+    ws.onopen = function() {
+        wsOpen = true;
+        console.log("ws opened");
+    };
+
+    // Process the responses sent by the ServerBIT
+    ws.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        a1Max = getMax(data.A1)
+        a3Max = getMax(data.A3)
+        a5Max = getMax(data.A5)
+        a1LastValue = getLastValue(data.A1)
+        a3LastValue = getLastValue(data.A3)
+        a4LastValue = getLastValue(data.A4)
+        a5LastValue = getLastValue(data.A5)
+        $('input[name=a1LastValue]').val(a1LastValue);
+        $('input[name=a3LastValue]').val(a3LastValue);
+        $('input[name=a4LastValue]').val(a4LastValue);
+        $('input[name=a5LastValue]').val(a5LastValue);
+        console.log('~');
+        console.log('1~' + a1Max);
+        console.log('3~' + a3Max);
+        console.log('5~' + a5Max);
+        if (isSnapFingers(a1Max, a3Max, a5Max)) {
+            snapFingerWasMage();
+            console.log('SNAP FINGERS!!');
+            $(".mylogs").append('<li >SNAP FINGERS!</li>');
+        }
+        if (isPowerMove(a1Max, a3Max, a5Max)) {
+            powerMoveWasMage()
+            console.log('Power move!!');
+            $(".mylogs").append('<li >POWER MOVE!</li>');
+        } else {
+            powerMoveWasNotMage()
+        }
+        var normalizedValue = (a5LastValue - a5rotateMinimumValue) / (a5rotateMaximumValue - a5rotateMinimumValue);
+        playingStuff.currentSettings.volume = normalizedValue * 100;
+        playingStuff.applySettingsToAll(playingStuff.currentSettings);
+    };
+
+    seta5Max(650)
+
+    function snapFingerWasMage() {
+        tracksPlaying = playingStuff.tracksActive.length
+        switch (tracksPlaying) {
+            case 0:
+                factoryMovement('upmovement');
+                break;
+            case 1:
+                factoryMovement('downmovement');
+                break;
+            case 2:
+                stopAllStages()
+            default:
+        }
+    }
+
+    function powerMoveWasMage() {
+        playingStuff.currentSettings.overdrive = 100;
+        playingStuff.currentSettings.overdriveDrive = 100;
+        playingStuff.applySettingsToAll(playingStuff.currentSettings);
+    }
+
+    function powerMoveWasNotMage() {
+        playingStuff.currentSettings.overdrive = 100;
+        playingStuff.currentSettings.overdriveDrive = 0;
+        playingStuff.applySettingsToAll(playingStuff.currentSettings);
+    }
+
+    function renewA5Max() {
+        seta5Max($('input[name=a5LastValue]').val());
+    }
+
+    function seta5Max(newValue) {
+        a5rotateMaximumValue = Number(newValue)
+        a5rotateMiddleValue = a5rotateMaximumValue - 100
+        a5rotateMinimumValue = a5rotateMiddleValue - 100
+    }
+
+    function renewA5Middle() {
+        seta5Middle($('input[name=a5LastValue]').val());
+    }
+
+    function seta5Middle(newValue) {
+        a5rotateMiddleValue = Number(newValue)
+        a5rotateMaximumValue = a5rotateMiddleValue + 100
+        a5rotateMinimumValue = a5rotateMiddleValue - 100
+    }
+
+    function isSnapFingers(a1Max, a3Max, a5Max) {
+        if (Number(a1Max) > 870 && Number(a3Max) > 750 && Number(a5Max) > 740) {
+            return true
+        }
+        return false
+    }
+
+    function isPowerMove(a1Max, a3Max, a5Max) {
+        if (Number(a1Max) > 1020) {
+          return false;
+        }
+        if (Number(a1Max) > 870 && Number(a3Max) < 700 && Number(a5Max) < 700) {
+            return true
+        }
+        return false
+    }
+
+    function getMax(arr) {
+        var max;
+        for (var i = 0; i < arr.length; i++) {
+            if (!max || parseInt(arr[i]) > parseInt(max))
+                max = arr[i];
+        }
+        return parseInt(max);
+    }
+
+    function getLastValue(arr) {
+        var lastValue = false;
+        for (var i = 0; i < arr.length; i++) {
+            lastValue = arr[i];
+        }
+        return parseInt(lastValue);
+    }
+
+    window.onbeforeunload = function() {
+        ws.onclose = function() {};
+        ws.close();
+    };
+</script>
+
+<script>
+    $("#effects-panel input[type=checkbox]").change(function() {
+        if ($(this).prop("checked")) {
+            addEffectDiv($(this).prop("id"), $(this).prop("value"));
+        } else {
+            removeEffectDiv($(this).prop("id"));
+        }
+    });
+
+    function buildEffectElement(id, name) {
+        return '<div ' + 'id="e_' + id + '" class="col-sm-2 text-center"><p>' + name + '</p></div>';
+    }
+
+    function addEffectDiv(id, name) {
+        var div = buildEffectElement(id, name);
+        $("#effects-sequence .panel-body").append(div);
+    }
+
+    function removeEffectDiv(id) {
+        $('#e_' + id).remove();
+    }
+
+    factoryMovement = function(actionName) {
+        var selectedActionPanel = $("#panel_" + actionName);
+        var isActiveDom = $(selectedActionPanel).find('label.switch input[type=checkbox]');
+        var selectedActionPanel = $("#body_" + actionName) // body_downmovement
+
+        if (isActiveDom.prop("checked")) {
+            var applyNewSettings = useNewSettingsFactory(selectedActionPanel);
+            if (true) { // yup!
+                var newSettings = getSelectedSampleSettings(selectedActionPanel);
+                playingStuff.applySettingsToAll(newSettings);
+                playingStuff.addStage(newSettings);
+            } else {
+                settings = playingStuff.currentSettings.sampleSrc ? playingStuff.currentSettings : getSelectedSampleSettings(selectedActionPanel);
+                playingStuff.addStage(settings);
+            }
+        }
+    }
+
+    useNewSettingsFactory = function(selectPanel) {
+        return selectPanel.find("input.applycb").prop("checked");
+    }
+
+    getSelectedSampleSettings = function(selectedPanel) {
+        var map = {};
+        $(selectedPanel).find(".effect").each(function() {
+            value = 0;
+            if ($(this).val() != '') {
+                value = $(this).val();
+            }
+            map[$(this).attr("name")] = value;
         });
-        </script>
-  </body>
+        var SampleSetting = {
+            loop: map['loop'],
+            sampleSrc: map['samplesrc'],
+            cabinet: map['cabinet_level'],
+            reverb: map['reverb_level'],
+            volume: map['volume_level'],
+            overdrive: map['overdrive_level'],
+            overdriveDrive: map['overdrive_drive'],
+            overdriveTone: map['overdrive_tone'],
+            delayTimer: map['delay_timer'],
+            delay: map['delay_level'],
+            delayFeedGain: map['delay_feedback_gain']
+        }
+
+        return SampleSetting;
+    }
+
+    stopAllStages = function() {
+        playingStuff.stopAll();
+    }
+
+    effectUp = function() {
+        playingStuff.currentSettings.volume++;
+        playingStuff.applySettingsToAll(playingStuff.currentSettings);
+    }
+
+    effectDown = function() {
+        playingStuff.currentSettings.volume--;
+        playingStuff.applySettingsToAll(playingStuff.currentSettings);
+
+    }
+</script>
+
+<script>
+    playingStuff = {
+        currentSettings: {},
+        tracksActive: [],
+        playSample: function(sage, sampleLocation) {
+                stage.play(sampleLocation);
+            },
+        stopSample: function(stage) {
+            stage.stop();
+        },
+        applySettingsToAll: function(settings) {
+            that = this;
+            this.tracksActive.forEach(function(item, index) {
+                that.applySettings(item, settings);
+            })
+        },
+        applySettings: function(track, settings) {
+            track.overdrive.setDrive(settings.overdriveDrive / 100);
+            //track.overdrive.setTone(settings.overdriveTone/100);
+            track.overdrive.setLevel(settings.overdrive / 100);
+            track.volume.setLevel(settings.volume / 100);
+            track.reverb.setLevel(settings.reverb / 100);
+            track.delay.setDelayTimer(settings.delayTimer / 100);
+            track.delay.setFeedbackGain(settings.delayFeedGain / 100);
+            track.cabinet.setLevel(settings.cabinet / 100);
+        },
+        addStage: function(stageDefinitions) {
+            var stage = new pb.Stage();
+            var ctx = stage.getContext();
+            var board = new pb.Board(ctx);
+            stage.setBoard(board);
+            var overdrive = new pb.stomp.Overdrive(ctx);
+            var reverb = new pb.stomp.Reverb(ctx);
+            var volume = new pb.stomp.Volume(ctx);
+            var cabinet = new pb.stomp.Cabinet(ctx);
+            var delay = new pb.stomp.Delay(ctx);
+            board.addPedals([overdrive, delay, reverb, volume, cabinet]);
+            this.currentSettings = stageDefinitions;
+            track = {
+                stage,
+                ctx,
+                board,
+                overdrive,
+                reverb,
+                volume,
+                cabinet,
+                delay,
+                stageDefinitions
+            };
+            this.applySettings(track, stageDefinitions)
+            this.tracksActive.push(track);
+            stage.play(stageDefinitions.sampleSrc);
+        },
+        stopAll: function() {
+            this.tracksActive.forEach(function(item, index) {
+                item.stage.stop();
+                item = null;
+            });
+            this.tracksActive = [];
+        }
+    };
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("button.bit-action").click(function() {
+            factoryMovement($(this).prop("id"));
+        });
+    });
+</script>
+
 </html>
